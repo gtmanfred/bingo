@@ -3,17 +3,15 @@ from flask import Blueprint
 from flask.ext.restful import Api
 
 def create_app():
-    app = Blueprint('backend', __name__)
+    app = Blueprint('client', __name__)
     app.debug=True
     api = Api(app)
 
-    from bingo.api.resources import (
-        Rules,
-        Rule
+    from bingo.client.resources import (
+        Game,
     )
     resources={
-        Rules: '/rules',
-        Rule: '/rules/<name>',
+        Game: '/',
     }
 
     for resource, route in resources.items():
