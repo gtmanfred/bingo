@@ -1,4 +1,5 @@
 import psycopg2
+import operator
 from flask import request, jsonify
 from flask.ext.restful import Resource, abort
 from flask.ext.restful.reqparse import RequestParser
@@ -18,7 +19,8 @@ def _get_rule(rule):
 class Rules(Resource):
     def get(self):
         rules = map(_get_rule, RuleT.query.order_by(RuleT.name).all())
-        return jsonify({'rules': rules})
+        rules.sort()
+        return jsonify({'rules': rules[0]})
 
     @groups_required(['admin'])
     def post(self):
