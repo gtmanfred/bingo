@@ -16,4 +16,5 @@ myApp.controller('BingoController', ['$scope', '$log', '$http', function($scope,
         }).error(function(error){$log.log(error);});
   });
   get_rules();
+  setInterval(function(){get_rules()}, 5000);
 }]);
