@@ -3,11 +3,23 @@
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">Bingo!</a>
+          <a class="navbar-brand btn btn-default" href="/">Bingo!</a>
         </div>
         <ul class="nav navbar-nav">
-          <li><button class="btn btn-default reset">Link</a></li>
+          <li><a class="btn btn-default reset" href="#">reset</a></li>
         </ul>
+        <ul class="nav navbar-nav">
+          <li><a class="btn btn-default" href="/admin">admin</a></li>
+        </ul>
+        {%- if current_user.is_authenticated() %}
+        <ul class="nav navbar-nav navbar-right">
+          <li><a class="btn btn-default" href="/logout">Logout</a></li>
+        </ul>
+        {%- else %}
+        <ul class="nav navbar-nav navbar-right">
+          <li><a class="btn btn-default" href="/login">Login</a></li>
+        </ul>
+        {%- endif %}
       </div>
     </nav>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">

@@ -1,7 +1,6 @@
 var myApp = angular.module('bingo', []);
 
 myApp.controller('BingoController', ['$scope', '$log', '$http', function($scope, $log, $http) {
-  $scope.rule = "test"
   $scope.ruleForm = {
       "name": "",
       "value": "",
@@ -13,7 +12,6 @@ myApp.controller('BingoController', ['$scope', '$log', '$http', function($scope,
       }).error(function(error) {
         $log.log(error);
       });
-    $log.log($scope.rules);
   };
   function reset_buttons(){
     for(var rule in $scope.rules) {
@@ -35,7 +33,7 @@ myApp.controller('BingoController', ['$scope', '$log', '$http', function($scope,
           get_rules();
       }).error(function(error){$log.log(error);});
   });
-  $(document).on("click", "button.reset", function () {
+  $(document).on("click", "a.reset", function () {
     reset_buttons();
   });
   get_rules();
