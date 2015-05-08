@@ -2,6 +2,7 @@ import psycopg2
 from flask import request, jsonify
 from flask.ext.restful import Resource, abort
 from flask.ext.restful.reqparse import RequestParser
+from flask.ext.stormpath import groups_required
 
 from bingo.api.models import RuleT
 from bingo.wsgi import db
@@ -19,6 +20,7 @@ class Rules(Resource):
         rules = map(_get_rule, RuleT.query.order_by(RuleT.name).all())
         return jsonify({'rules': rules})
 
+    @groups_required(['admin'])
     def post(self):
         rj = request.get_json(force=True)
         rule = RuleT.query.filter_by(name=rj['name']).first()
@@ -34,6 +36,7 @@ class Rules(Resource):
                 abort(500, message="Unable to create rule: {0}".format(r['name']))
         abort(500, message="Something failed.")
 
+    @groups_required(['admin'])
     def put(self):
         rj = request.get_json(force=True)
         rule = RuleT.query.filter_by(name=rj['name']).first()
@@ -53,10 +56,26 @@ class Rules(Resource):
 
 
 class Rule(Resource):
-    def get(self, name=None):
+    def get(self, name):
         if name:
             rule = RuleT.query.filter_by(name=name).first()
             return jsonify({'rule': _get_rule(rule)})
+
+    @groups_required(['player'])
+    def put(self, name):
+        rule = RuleT.query.filter_by(name=name).first()
+        if not rule:
+            abort(404, message="Rule not found: {0}".format(name))
+        if rule.active:
+            rule.active = False
+        else:
+            rule.active = True
+        try:
+            db.session.commit()
+            return jsonify({"status": "updated"})
+        except Exception as exc:
+            abort(500, message="Unable to update rule: {0}".format(r['name']))
+        abort(500, message="Something failed.")
 
     def delete(self, name):
         rule = RuleT.query.filter_by(name=name).first()

@@ -1,7 +1,8 @@
-from flask import request, jsonify
-from flask.ext.restful import Resource, abort
-from flask.ext.restful.reqparse import RequestParser
+from flask import request, jsonify, render_template, session
+from flask.views import MethodView
+from flask.ext.stormpath import login_required, user
 
-class Game(Resource):
+class Game(MethodView):
+    @login_required
     def get(self):
-        return jsonify({'games': []})
+        return render_template('index.html', title='The Game!')
