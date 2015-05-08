@@ -18,9 +18,12 @@ def _get_rule(rule):
 
 class Rules(Resource):
     def get(self):
-        rules = map(_get_rule, RuleT.query.order_by(RuleT.name).all())
+        rules = map(_get_rule, RuleT.query.all())
         rules.sort()
-        return jsonify({'rules': rules[0]})
+        response = {'rules': {}}
+        for rule in rules:
+            response['rules'].update(rule)
+        return jsonify(response)
 
     @groups_required(['admin'])
     def post(self):
