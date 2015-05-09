@@ -3,7 +3,6 @@ from flask.views import MethodView
 from flask.ext.stormpath import login_required, user, groups_required
 
 class Game(MethodView):
-    @login_required
     def get(self):
         return render_template('index.html', title='The Game!')
 
