@@ -30,9 +30,9 @@
   </head>
   <body ng-controller="BingoController">
     {%- raw %}
-    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" ng-repeat="(rule, value) in rules">
-      {{r=rule.split('!', '').split('?').split(' ').join('');""}}
-      <div class="panel panel-default">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default" ng-repeat="(rule, value) in rules">
+        {{r=rule.split('!', '').split('?').split(' ').join('');""}}
         <div class="panel-heading" role="tab" id="h{{r}}">
           <h4 class="panel-title">
             <button class="btn btn-danger rule" type="button" name="{{rule}}" ng-if="!value.active">{{rule}}</button>
