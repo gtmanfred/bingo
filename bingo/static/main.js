@@ -37,5 +37,5 @@ myApp.controller('BingoController', ['$scope', '$log', '$http', function($scope,
     reset_buttons();
   });
   get_rules();
-  setInterval(function(){get_rules()}, 5000);
+  setInterval(function(){get_rules()}, 30000);
 }]);
