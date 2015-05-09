@@ -25,7 +25,12 @@ myApp.controller('BingoController', ['$scope', '$log', '$http', function($scope,
   };
   $scope.entry = function() {
     $http.post('/rules', data=$scope.ruleForm).
-      error(function(error){$log.log(error)});
+      success(function() {
+        $scope.ruleForm = {
+          "name": "",
+          "value": "",
+        };
+      }).error(function(error){$log.log(error)});
   }
   $(document).on("click", "button.rule", function () {
     $http.put('/rules/' + this.name).
