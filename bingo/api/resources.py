@@ -13,6 +13,7 @@ def _get_rule(rule):
         rule.name: {
             'rule': rule.value,
             'active': rule.active,
+            'id': rule.id,
         }
     }
 

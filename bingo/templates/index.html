@@ -32,17 +32,16 @@
     {%- raw %}
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
       <div class="panel panel-default" ng-repeat="(rule, value) in rules">
-        {{r=rule.split('!', '').split('?').split(' ').join('');""}}
-        <div class="panel-heading" role="tab" id="h{{r}}">
+        <div class="panel-heading" role="tab" id="h{{value.id}}">
           <h4 class="panel-title">
             <button class="btn btn-danger rule" type="button" name="{{rule}}" ng-if="!value.active">{{rule}}</button>
             <button class="btn btn-success rule" type="button" name="{{rule}}" ng-if="value.active">{{rule}}</button>
-            <button class="collapsed btn btn-primary" data-toggle="collapse" data-parent="#accordion" href="#c{{r}}" aria-expanded="false" aria-controls="c{{r}}">
+            <button class="collapsed btn btn-primary" data-toggle="collapse" data-parent="#accordion" href="#c{{value.id}}" aria-expanded="false" aria-controls="c{{value.id}}">
               Details!
             </button>
           </h4>
         </div>
-        <div id="c{{r}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="h{{r}}">
+        <div id="c{{value.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="h{{value.id}}">
           <div class="panel-body">
             {{value.rule}}
           </div>
