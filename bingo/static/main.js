@@ -1,3 +1,25 @@
+var substringMatcher = function(strs) {
+  return function findMatches(q, cb) {
+    var matches, substringRegex;
+
+  // an array that will be populated with substring matches
+    matches = [];
+
+  // regex used to determine if a string contains the substring `q`
+    substrRegex = new RegExp(q, 'i');
+
+  // iterate through the pool of strings and for any string that
+  // contains the substring `q`, add it to the `matches` array
+    $.each(strs, function(i, str) {
+      if (substrRegex.test(str)) {
+        matches.push(str);
+      }
+    });
+
+    cb(matches);
+  };
+};
+
 var myApp = angular.module('bingo', []);
 
 myApp.controller('BingoController', ['$scope', '$log', '$http', function($scope, $log, $http) {
@@ -9,6 +31,8 @@ myApp.controller('BingoController', ['$scope', '$log', '$http', function($scope,
     $http.get('/rules').
       success(function(data, status, headers, config) {
         $scope.rules = data['rules'];
+        $scope.ruleNames = Object.keys(data['rules'])
+        $('#ruleName').autocomplete({source: $scope.ruleNames});
       }).error(function(error) {
         $log.log(error);
       });
@@ -24,16 +48,28 @@ myApp.controller('BingoController', ['$scope', '$log', '$http', function($scope,
     }
   };
   $scope.entry = function() {
-    $http.post('/rules', data=$scope.ruleForm).
-      success(function() {
-        location.reload();
-      }).error(function(error){$log.log(error)});
+    if ($scope.ruleNames.indexOf($scope.ruleForm.name) > -1) {
+      $http.put('/rules', data=$scope.ruleForm).
+        success(function() {
+          location.reload();
+        }).error(function(error){$log.log(error)});
+    } else {
+      $http.post('/rules', data=$scope.ruleForm).
+        success(function() {
+          location.reload();
+        }).error(function(error){$log.log(error)});
+    };
   }
   $(document).on("click", "button.rule", function () {
     $http.put('/rules/' + this.name).
       success(function(data, status, headers, config) {
           get_rules();
       }).error(function(error){$log.log(error);});
+  });
+  $(document).on("focusout", "input.entry", function () {
+    if ($scope.ruleNames.indexOf($scope.ruleForm.name) > -1) {
+      $scope.ruleForm.value = $scope.rules[$scope.ruleForm.name].rule;
+    }
   });
   $(document).on("click", "a.reset", function () {
     reset_buttons();
