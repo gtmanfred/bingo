@@ -31,8 +31,19 @@ myApp.controller('BingoController', ['$scope', '$log', '$http', function($scope,
     $http.get('/rules').
       success(function(data, status, headers, config) {
         $scope.rules = data['rules'];
-        $scope.ruleNames = Object.keys(data['rules'])
+        var ruleNames = Object.keys(data['rules']);
         $('#ruleName').autocomplete({source: $scope.ruleNames});
+        var names = [];
+        var tmpname = [];
+        for (var x in ruleNames) {
+          tmpname.push(ruleNames[x]);
+          if (tmpname.length == 5) {
+              names.push(tmpname);
+              tmpname = [];
+          };
+        };
+        $scope.ruleTableNames = names;
+        $scope.ruleNames = ruleNames;
       }).error(function(error) {
         $log.log(error);
       });

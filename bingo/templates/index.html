@@ -33,8 +33,11 @@
   </head>
   <body ng-controller="BingoController">
     {%- raw %}
+    <table>
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-      <div class="panel panel-default" ng-repeat="(rule, value) in rules">
+      <tr class="panel panel-default" ng-repeat="names in ruleTableNames">
+        <td ng-repeat="rule in names">
+        {{value=rules[rule];""}}
         <div class="panel-heading" role="tab" id="h{{value.id}}">
           <h4 class="panel-title">
             <button class="btn btn-danger rule" type="button" name="{{rule}}" ng-if="!value.active">{{rule}}</button>
@@ -49,8 +52,10 @@
             {{value.rule}}
           </div>
         </div>
-      </div>
+        </td>
+      </tr>
     </div>
+    </table>
     {%- endraw %}
   </body>
 </html>
