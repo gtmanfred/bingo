@@ -42,6 +42,7 @@ myApp.controller('BingoController', ['$scope', '$log', '$http', function($scope,
               tmpname = [];
           };
         };
+        names.push(tmpname);
         $scope.ruleTableNames = names;
         $scope.ruleNames = ruleNames;
       }).error(function(error) {
