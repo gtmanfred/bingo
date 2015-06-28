@@ -1,6 +1,5 @@
 import os
 from flask import Blueprint
-from flask.ext.restful import Api
 from flask.ext.stormpath import logout_user, user, login_required
 
 def create_app():
