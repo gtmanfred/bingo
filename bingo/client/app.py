@@ -6,10 +6,18 @@ def create_app():
     app = Blueprint('client', __name__)
     app.debug=True
 
-    from bingo.client import resources
+    from bingo.client.resources import (
+        Game,
+        GameAdmin,
+    )
 
-    app.add_url_rule('/', view_func=resources.Game.as_view('game'), methods=['GET'])
-    app.add_url_rule('/admin', view_func=resources.GameAdmin.as_view('gameadmin'), methods=['GET'])
+    resources = {
+        Game: '/',
+        GameAdmin: '/admin',
+    }
+
+    for resource, route in resources.items():
+        app.add_url_rule(route, view_func=resource.as_view(resource.__name__))
 
     @app.route('/logout')
     @login_required
